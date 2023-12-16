@@ -1,5 +1,16 @@
+Vue.use(VueRouter);
+import Home from './pages/Home.js';
+import About from './pages/About.js';
+const routes = [
+  { path: '/', component: Home },
+  { path: '/about', component: About },
+];
+const router = new VueRouter({
+  routes,
+});
 const app = new Vue({
   el: '#app',
+  router: router,
   data: {
     message: 'Hello world',
     seen: true,
@@ -7,6 +18,15 @@ const app = new Vue({
     name: '',
     count: 1,
     age: 22,
+  },
+  mounted() {
+    //work with DOM: get element
+    // Change DOM or call api
+    console.log('Mounted');
+    this.$refs.input.focus();
+  },
+  beforeDestroy() {
+    alert('Destroyed');
   },
   methods: {
     // reverseMessage() {
@@ -29,6 +49,7 @@ const app = new Vue({
     },
   },
   created: function () {
+    console.log('Created');
     //Call api
     //Access data
     //The created hook runs before the templates and Virtual DOM have been mounted or rendered - you are able to access reactive data and events that are active
@@ -50,9 +71,11 @@ const app = new Vue({
       get: function () {
         return this.age;
       },
-      set: function (age) {
-        this.age = age;
+      set: function (ageNumber) {
+        this.age = ageNumber;
       },
     },
   },
 });
+app.$el === document.getElementById('root');
+console.log(app.$el); //<div id="app">...</div>
