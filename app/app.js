@@ -1,4 +1,35 @@
 Vue.use(VueRouter);
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  state: {
+    count: 0,
+    todos: [],
+  },
+  mutations: {
+    increment(state) {
+      state.count = state.count + 1;
+    },
+    ADD_TODO(state, payload) {
+      state.todos = [...state.todos, payload];
+    },
+  },
+  actions: {
+    // Can be used asynchronously
+    increment(context) {
+      context.commit('increment');
+    },
+    async addTodo({ commit }, newTodo) {
+      try {
+        console.log(newTodo);
+        commit('ADD_TODO', newTodo);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+});
+
 import Home from './pages/Home.js';
 import About from './pages/About.js';
 const routes = [
@@ -10,6 +41,7 @@ const router = new VueRouter({
 });
 const app = new Vue({
   el: '#app',
+  store: store,
   router: router,
   data: {
     message: 'Hello world',
@@ -32,6 +64,9 @@ const app = new Vue({
     // reverseMessage() {
     //   this.message = this.message.split('').reverse().join('');
     // },
+    ...Vuex.mapActions({
+      ADD: 'addTodo',
+    }),
     reverseMessage: function () {
       this.message = this.message.split('').reverse().join('');
     },
@@ -46,6 +81,23 @@ const app = new Vue({
       const vm = this;
       vm.age = 100;
       console.log(vm.age);
+    },
+
+    //mutation
+    increment: function () {
+      // this.$store.commit('increment');
+
+      //use action
+      this.$store.dispatch('increment');
+    },
+
+    //action
+    createTodo: function () {
+      //C1
+      // this.ADD({ id: 1, title: 'Hello' });
+
+      //C2
+      this.$store.dispatch('addTodo', { id: 1, title: 'Hello' });
     },
   },
   created: function () {
@@ -66,6 +118,10 @@ const app = new Vue({
   computed: {
     increaseCount() {
       return (this.count += 1);
+    },
+    // get state inside store
+    getCountStore() {
+      return this.$store.state.count;
     },
     age: {
       get: function () {

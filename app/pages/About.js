@@ -13,13 +13,18 @@ const About = Vue.component('Home', {
       },
     };
   },
+  methods: {
+    eventHandler(e) {
+      console.log('eventHandler', e);
+    },
+  },
   beforeDestroy() {
     alert('Destroyed About Page');
   },
   template: `<div>
                     <h1>{{title}}</h1>
                     <Header/>
-                    <TodoItem v-bind:todo="todo" />
+                    <TodoItem v-bind:todo="todo" v-on:myEvent="eventHandler" />
                     <todo-item v-bind:todo="todo"></todo-item>
                 </div>`,
 });
