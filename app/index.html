@@ -24,6 +24,11 @@
       <h5>Count: {{getCountStore}}</h5>
       <button v-on:click="increment">Increase Count</button>
       <button v-on:click="createTodo">create todo</button>
+      <form @submit.prevent="createTodo">
+        <input v-model="title" />
+        <input v-model="description" />
+        <button type="submit">Add</button>
+      </form>
       <div>
         <router-link to="/">Home</router-link>
         <router-link to="/about">About</router-link>
@@ -34,6 +39,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router@3/dist/vue-router.js"></script>
     <script src="https://unpkg.com/vuex@3.1.0/dist/vuex.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./item.js"></script>
     <script src="./app.js" type="module"></script>
     <!-- <script src="./item.js"></script> -->

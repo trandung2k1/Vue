@@ -10,6 +10,9 @@ const Home = Vue.component('Home', {
   destroyed() {
     console.log('destroyed');
   },
+  mounted() {
+    console.log('Home', this.$store.dispatch);
+  },
   template: `<div>
                     <h1>Home Page</h1>
                     <h2>{{name}}</h2>

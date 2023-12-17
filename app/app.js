@@ -20,12 +20,12 @@ const store = new Vuex.Store({
       context.commit('increment');
     },
     async addTodo({ commit }, newTodo) {
-      try {
-        console.log(newTodo);
-        commit('ADD_TODO', newTodo);
-      } catch (error) {
-        console.log(error);
-      }
+      const response = await axios.post(
+        'https://api-todos-0ylw.onrender.com/api/v1/todos',
+        newTodo,
+      );
+      commit('ADD_TODO', response.data);
+      return response.data;
     },
   },
 });
@@ -50,6 +50,8 @@ const app = new Vue({
     name: '',
     count: 1,
     age: 22,
+    title: '',
+    description: '',
   },
   mounted() {
     //work with DOM: get element
@@ -97,7 +99,24 @@ const app = new Vue({
       // this.ADD({ id: 1, title: 'Hello' });
 
       //C2
-      this.$store.dispatch('addTodo', { id: 1, title: 'Hello' });
+      const title = this.title;
+      const description = this.description;
+      const data = {
+        title,
+        completed: false,
+        description,
+      };
+
+      this.$store
+        .dispatch('addTodo', data)
+        .then((rs) => {
+          console.log(rs);
+          this.title = '';
+          this.description = '';
+        })
+        .catch((err) => {
+          console.log('Eror: ' + err.message);
+        });
     },
   },
   created: function () {
@@ -135,3 +154,4 @@ const app = new Vue({
 });
 app.$el === document.getElementById('root');
 console.log(app.$el); //<div id="app">...</div>
+console.log(axios);
