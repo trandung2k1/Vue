@@ -14,12 +14,24 @@ export default {
     onSubmit() {
       console.log(this.msg);
     },
+    myHandleClick(e) {
+      console.log(e);
+    },
+    increment() {
+      this.$store.commit('increment');
+      console.log(this.$store.state.count);
+    },
   },
-  computed: {},
+  computed: {
+    count() {
+      return this.$store.state.count;
+    },
+  },
   async mounted() {
     const res = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=5');
     const rs = await res.json();
     this.todos = rs;
+    console.log(this.$refs.inputRef);
   },
   components: { Header },
   created() {
@@ -43,11 +55,18 @@ export default {
 <template>
   <div id="app">
     {{ age }}
-    <Header v-bind:msg="msg"></Header>
+    <Header v-bind:msg="msg" @handle-Click="myHandleClick"></Header>
     <form @submit.prevent="onSubmit">
-      <input type="text" v-model="msg" />
+      <input ref="inputRef" type="text" v-model="msg" />
       <button type="submit">Submit</button>
     </form>
+    {{ count }}
+    <button @click="increment">Increase</button>
+    <div>
+      <router-link to="/">Home</router-link>
+      <router-link to="/about">About</router-link>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
